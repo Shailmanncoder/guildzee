@@ -20,6 +20,16 @@ export interface User {
   accentColor: string;
 }
 
+const getBackendUrl = () => {
+  if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
+  if (typeof window !== 'undefined') {
+    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+      return `${window.location.protocol}//${window.location.host}/api/backend`;
+    }
+  }
+  return 'http://localhost:4000';
+};
+
 interface AuthContextType {
   token: string | null;
   user: User | null;
@@ -75,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       // Best-effort call to backend logout to clear HTTP cookie and delete session
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+      const backendUrl = getBackendUrl();
       await fetch(`${backendUrl}/api/auth/logout`, {
         method: 'POST',
         headers: {
@@ -108,7 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user || !token) return;
     updateUser({ themePreference: theme });
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+      const backendUrl = getBackendUrl();
       await fetch(`${backendUrl}/api/users/profile`, {
         method: 'PUT',
         headers: {
@@ -126,7 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user || !token) return;
     updateUser({ accentColor: color });
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+      const backendUrl = getBackendUrl();
       await fetch(`${backendUrl}/api/users/profile`, {
         method: 'PUT',
         headers: {

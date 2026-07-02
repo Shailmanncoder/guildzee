@@ -4,7 +4,16 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const BE = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
+const getBackendUrl = () => {
+  if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
+  if (typeof window !== 'undefined') {
+    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+      return `${window.location.protocol}//${window.location.host}/api/backend`;
+    }
+  }
+  return 'http://localhost:4000';
+};
+const BE = getBackendUrl();
 
 export default function LoginPage() {
   const { login, token, loading } = useAuth();
