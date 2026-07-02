@@ -22,7 +22,7 @@ export default function LoginPage() {
       const res = await fetch(`${BE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ emailOrUsername: email, password }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Invalid email or password');
