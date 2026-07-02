@@ -82,7 +82,7 @@ function Overlay({ children, onClose }: { children: React.ReactNode; onClose: ()
 // ══════════════════════════════════════════════════════════════════
 export default function Dashboard() {
   const router = useRouter();
-  const { token, user, logout, updateUser } = useAuth();
+  const { token, user, logout, updateUser, loading } = useAuth();
   const { socket, onlineFriends, typingUsers, messagesNotifier } = useSocket();
   const { call, initiateCall, acceptCall, endCall, isMuted, toggleMute, activeVoiceChannelId, voiceUsers, joinVoiceChannel } = useCall();
 
@@ -147,7 +147,11 @@ export default function Dashboard() {
 
   const scrollToBottom = useCallback(() => { setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 80); }, []);
 
-  useEffect(() => { if (!token) router.push('/login'); }, [token]);
+  useEffect(() => {
+    if (!loading && !token) {
+      router.push('/login');
+    }
+  }, [token, loading]);
   useEffect(() => { if (token) { fetchFriends(); fetchGroups(); fetchServers(); } }, [token]);
   useEffect(() => { if (token && serverId) fetchServerDetail(serverId); else setServerDetail(null); }, [serverId, token]);
   useEffect(() => { if (user) { setEditName(user.displayName || ''); setEditBio(user.bio || ''); setEditStatus(user.customStatus || ''); } }, [user, showSettings]);
@@ -308,6 +312,16 @@ export default function Dashboard() {
 
   const lvl = user?.level || 1, xp = user?.xp || 0, xpMax = lvl * 200;
   const xpPct = Math.min(100, Math.round((xp % xpMax) / xpMax * 100));
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#070910', color: '#fff', fontFamily: "'Inter',sans-serif" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', border: '4px solid rgba(124,92,255,.15)', borderTopColor: '#7C5CFF', animation: 'spin .8s linear infinite' }} />
+          <span style={{ fontSize: 11, fontWeight: 800, color: '#4A5168', letterSpacing: '.08em' }}>VERIFYING SESSION…</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', fontFamily: "'Inter',sans-serif", background: '#070910', color: '#C8CBDB' }}>

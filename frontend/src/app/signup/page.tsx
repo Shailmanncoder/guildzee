@@ -7,7 +7,7 @@ import Link from 'next/link';
 const BE = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
 
 export default function SignupPage() {
-  const { token } = useAuth();
+  const { token, login } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
@@ -46,7 +46,24 @@ export default function SignupPage() {
         body: JSON.stringify({ email, username, displayName, password }),
       });
       const d = await r.json();
-      if (r.ok) { setSuccess(true); setTimeout(() => router.push('/login'), 2500); }
+      if (r.ok) {
+        setSuccess(true);
+        try {
+          const loginRes = await fetch(`${BE}/api/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ emailOrUsername: email, password }),
+          });
+          const loginData = await loginRes.json();
+          if (loginRes.ok) {
+            setTimeout(() => {
+              login(loginData.token, loginData.user);
+            }, 1500);
+            return;
+          }
+        } catch { }
+        setTimeout(() => router.push('/login'), 2500);
+      }
       else setError(d.error || 'Registration failed');
     } catch { setError('Connection error. Is the server running?'); }
     finally { setLoading(false); }
@@ -88,7 +105,7 @@ export default function SignupPage() {
               <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl" style={{ background: 'rgba(35,209,139,.15)', border: '2px solid #23D18B', animation: 'checkPop .4s cubic-bezier(.34,1.56,.64,1)' }}>✓</div>
               <div className="text-center">
                 <h2 className="text-2xl font-black text-white mb-2">Account Created! 🎉</h2>
-                <p className="text-[14px]" style={{ color: '#4E5462' }}>Redirecting you to login…</p>
+                <p className="text-[14px]" style={{ color: '#4E5462' }}>Logging you in…</p>
               </div>
             </div>
           ) : (
