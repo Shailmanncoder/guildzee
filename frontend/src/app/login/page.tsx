@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -7,17 +7,34 @@ import Link from 'next/link';
 const BE = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, token, loading } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [error, setError] = useState('');
   const [showPw, setShowPw] = useState(false);
 
+  useEffect(() => {
+    if (!loading && token) {
+      router.push('/dashboard');
+    }
+  }, [token, loading]);
+
+  if (loading || token) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#0D0E11', color: '#fff', fontFamily: "'Inter',sans-serif" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', border: '4px solid rgba(102,126,234,.15)', borderTopColor: '#667eea', animation: 'spin .8s linear infinite' }} />
+          <span style={{ fontSize: 11, fontWeight: 800, color: '#4E5462', letterSpacing: '.08em' }}>VERIFYING SESSION…</span>
+        </div>
+      </div>
+    );
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true); setError('');
+    setLoadingSubmit(true); setError('');
     try {
       const res = await fetch(`${BE}/api/auth/login`, {
         method: 'POST',
@@ -31,7 +48,7 @@ export default function LoginPage() {
     } catch (err: any) {
       setError(err.message || 'Invalid email or password');
     } finally {
-      setLoading(false);
+      setLoadingSubmit(false);
     }
   }
 
@@ -103,10 +120,10 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" disabled={loading}
+            <button type="submit" disabled={loadingSubmit}
               className="w-full h-12 rounded-xl font-bold text-[15px] text-white transition hover:opacity-90 active:scale-[.98] flex items-center justify-center gap-2"
               style={{ background: 'linear-gradient(135deg,#667eea,#764ba2)', boxShadow: '0 6px 24px rgba(102,126,234,.35)', marginTop: 24 }}>
-              {loading ? (
+              {loadingSubmit ? (
                 <><span className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white" style={{ animation: 'spin .7s linear infinite' }} />Signing in…</>
               ) : 'Log In'}
             </button>

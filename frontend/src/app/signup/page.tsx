@@ -7,7 +7,7 @@ import Link from 'next/link';
 const BE = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
 
 export default function SignupPage() {
-  const { token, login } = useAuth();
+  const { token, login, loading: authLoading } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
@@ -20,7 +20,22 @@ export default function SignupPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => { if (token) router.push('/dashboard'); }, [token]);
+  useEffect(() => {
+    if (!authLoading && token) {
+      router.push('/dashboard');
+    }
+  }, [token, authLoading]);
+
+  if (authLoading || token) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#0D0E11', color: '#fff', fontFamily: "'Inter',sans-serif" }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', border: '4px solid rgba(102,126,234,.15)', borderTopColor: '#667eea', animation: 'spin .8s linear infinite' }} />
+          <span style={{ fontSize: 11, fontWeight: 800, color: '#4E5462', letterSpacing: '.08em' }}>VERIFYING SESSION…</span>
+        </div>
+      </div>
+    );
+  }
 
   const pwStrength = () => {
     let s = 0;
