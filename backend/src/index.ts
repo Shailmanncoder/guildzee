@@ -14,6 +14,18 @@ import { errorHandler } from './middlewares/errorMiddleware';
 import { logger } from './utils/logger';
 
 const app = express();
+
+// Strip /api/backend prefix when routed via Vercel multi-service rewrites
+app.use((req, res, next) => {
+  if (req.url.startsWith('/api/backend')) {
+    req.url = req.url.replace('/api/backend', '');
+    if (!req.url.startsWith('/')) {
+      req.url = '/' + req.url;
+    }
+  }
+  next();
+});
+
 const server = http.createServer(app);
 
 const PORT = process.env.PORT || 4000;
