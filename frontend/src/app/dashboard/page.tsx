@@ -7,6 +7,30 @@ import { useRouter } from 'next/navigation';
 
 const BE = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:4000';
 
+function AdSenseUnit() {
+  useEffect(() => {
+    try {
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      (window as any).adsbygoogle.push({});
+    } catch (e) {
+      console.error('AdSense error', e);
+    }
+  }, []);
+
+  return (
+    <div style={{ margin: '8px auto 20px', display: 'flex', justifyContent: 'center', width: '100%', overflow: 'hidden', minHeight: 90, background: 'rgba(255,255,255,.01)', border: '1px solid rgba(255,255,255,.03)', borderRadius: 12, padding: 8 }}>
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block', width: '100%', minWidth: 250 }}
+        data-ad-client="ca-pub-2123132010029656"
+        data-ad-slot="8181147423"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </div>
+  );
+}
+
 // ─── Color seeds ─────────────────────────────────────────────────────────────
 const PALETTES: [string, string][] = [
   ['#7C5CFF', '#35E7D2'], ['#f093fb', '#f5576c'], ['#4facfe', '#00f2fe'],
@@ -312,7 +336,7 @@ export default function Dashboard() {
 
   const lvl = user?.level || 1, xp = user?.xp || 0, xpMax = lvl * 200;
   const xpPct = Math.min(100, Math.round((xp % xpMax) / xpMax * 100));
-  if (loading) {
+  if (loading || !token) {
     return (
       <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#070910', color: '#fff', fontFamily: "'Inter',sans-serif" }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
@@ -666,6 +690,7 @@ export default function Dashboard() {
               </div>
 
               <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+                <AdSenseUnit />
                 {/* Search */}
                 <div style={{ position: 'relative', marginBottom: 24, maxWidth: 480 }}>
                   <svg style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#3D4259', pointerEvents: 'none' }} width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
@@ -731,6 +756,7 @@ export default function Dashboard() {
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', animation: 'slideLeft .2s ease' }}>
               {/* Messages */}
               <div style={{ flex: 1, overflowY: 'auto', padding: '24px 20px 8px' }}>
+                <AdSenseUnit />
                 {/* Channel intro */}
                 <div style={{ marginBottom: 32, paddingBottom: 24, borderBottom: '1px solid rgba(255,255,255,.06)' }}>
                   {activeTabType === 'dm' && recipient ? (
