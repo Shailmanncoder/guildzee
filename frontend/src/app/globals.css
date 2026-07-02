@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Poppins', sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  --color-brand-purple: #7C3AED;
+  --color-brand-purple-light: #8B5CF6;
+  --color-brand-cyan: #06B6D4;
+  --color-brand-mint: #10B981;
+  --color-brand-orange: #F59E0B;
+  --color-brand-pink: #EC4899;
+
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+}
+
+:root {
+  --background: #F5F7FA;
+  --foreground: #1E293B;
+  --surface: rgba(255, 255, 255, 0.7);
+  --border: rgba(30, 41, 59, 0.08);
+  --accent: #7C3AED;
+}
+
+.theme-dark {
+  --background: #0E1117;
+  --foreground: #F8FAFC;
+  --surface: rgba(30, 41, 59, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #8B5CF6;
+}
+
+.theme-amoled {
+  --background: #000000;
+  --foreground: #F8FAFC;
+  --surface: rgba(20, 20, 20, 0.8);
+  --border: rgba(255, 255, 255, 0.12);
+  --accent: #A78BFA;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism primitives */
+.glass-panel {
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.45);
+}
+
+/* Dialog entry/exit animations leveraging @starting-style */
+dialog[open],
+[popover]:popover-open {
+  opacity: 1;
+  transform: scale(1);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+dialog,
+[popover] {
+  opacity: 0;
+  transform: scale(0.95);
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.2s;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-behavior: allow-discrete;
+}
+
+dialog::backdrop,
+[popover]::backdrop {
+  background-color: rgba(0, 0, 0, 0);
+  transition:
+    display 0.2s allow-discrete,
+    overlay 0.2s allow-discrete,
+    background-color 0.2s ease-out;
+}
+
+dialog[open]::backdrop,
+[popover]:popover-open::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+
+  @starting-style {
+    background-color: rgba(0, 0, 0, 0);
+  }
+}
+
+/* Animated accent gradient buttons and text */
+.accent-gradient {
+  background: linear-gradient(135deg, var(--accent) 0%, #06B6D4 100%);
+}
+
+.text-accent-gradient {
+  background: linear-gradient(135deg, var(--accent) 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Tactile bouncing feedback utility classes */
+.bounce-hover {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bounce-hover:hover {
+  transform: scale(1.02);
+}
+.bounce-hover:active {
+  transform: scale(0.97);
+}

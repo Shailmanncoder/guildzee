@@ -1,0 +1,8 @@
+{
+  "appId": "com.playchat.app",
+  "appName": "PlayChat",
+  "webDir": "out",
+  "server": {
+    "androidScheme": "https"
+  }
+}
