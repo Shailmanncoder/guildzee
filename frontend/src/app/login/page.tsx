@@ -16,7 +16,8 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
 
   useEffect(() => {
-    if (!loading && token) {
+    const hasLocalToken = typeof window !== 'undefined' && localStorage.getItem('token');
+    if (!loading && (token || hasLocalToken)) {
       router.push('/dashboard');
     }
   }, [token, loading]);
@@ -44,7 +45,6 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Invalid email or password');
       login(data.token, data.user);
-      router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Invalid email or password');
     } finally {

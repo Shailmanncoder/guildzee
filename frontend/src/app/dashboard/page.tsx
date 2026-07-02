@@ -172,7 +172,8 @@ export default function Dashboard() {
   const scrollToBottom = useCallback(() => { setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 80); }, []);
 
   useEffect(() => {
-    if (!loading && !token) {
+    const hasLocalToken = typeof window !== 'undefined' && localStorage.getItem('token');
+    if (!loading && !token && !hasLocalToken) {
       router.push('/login');
     }
   }, [token, loading]);

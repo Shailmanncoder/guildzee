@@ -21,7 +21,8 @@ export default function SignupPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && token) {
+    const hasLocalToken = typeof window !== 'undefined' && localStorage.getItem('token');
+    if (!authLoading && (token || hasLocalToken)) {
       router.push('/dashboard');
     }
   }, [token, authLoading]);
