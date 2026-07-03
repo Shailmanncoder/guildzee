@@ -12,12 +12,25 @@ export default function GuildzeeLandingPage() {
   const [activeSpeakerIdx, setActiveSpeakerIdx] = useState(0);
   const [captionName, setCaptionName] = useState('Nova');
   const [captionText, setCaptionText] = useState('');
+  const [downloadUrl, setDownloadUrl] = useState('http://localhost:4000/api/download-apk');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const glowRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+    const getBackendUrl = () => {
+      if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
+      if (typeof window !== 'undefined') {
+        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
+          return `${window.location.protocol}//${window.location.host}/api/backend`;
+        }
+      }
+      return 'http://localhost:4000';
+    };
+    setDownloadUrl(`${getBackendUrl()}/api/download-apk`);
+  }, []);
 
   useEffect(() => {
     if (!mounted) return;
@@ -536,7 +549,7 @@ export default function GuildzeeLandingPage() {
             <a href="#features">Features</a>
             <a href="#calls">Voice &amp; Video</a>
             <a href="#cta">Community</a>
-            <a href="http://localhost:4000/api/download-apk">Download</a>
+            <a href={downloadUrl}>Download</a>
           </div>
         </div>
         <div className="nav-right">
@@ -571,7 +584,7 @@ export default function GuildzeeLandingPage() {
           <a href="#features" onClick={() => setDrawerOpen(false)}>Features</a>
           <a href="#calls" onClick={() => setDrawerOpen(false)}>Voice &amp; Video</a>
           <a href="#cta" onClick={() => setDrawerOpen(false)}>Community</a>
-          <a href="http://localhost:4000/api/download-apk" onClick={() => setDrawerOpen(false)}>Download</a>
+          <a href={downloadUrl} onClick={() => setDrawerOpen(false)}>Download</a>
         </div>
         <div className="drawer-bottom">
           <Link href={token ? '/dashboard' : '/login'} className="btn btn-secondary" onClick={() => setDrawerOpen(false)}>
