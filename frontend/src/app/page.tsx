@@ -472,7 +472,9 @@ export default function GuildzeeLandingPage() {
         .dot-brand{background:var(--brand);--r:110px;animation-duration:8s;}
         .dot-teal{background:var(--teal);--r:110px;animation-duration:12s;animation-delay:-4s;}
         .dot-warn{background:var(--warn);--r:150px;animation-duration:15s;}
-        .dot-danger{background:var(--danger);--r:150px;animation-duration:10s;animati        /* Float Windows */
+        .dot-danger{background:var(--danger);--r:150px;animation-duration:10s;animation-delay:-6s;}
+
+
         .float-window{
           position:absolute;width:180px;
           background:rgba(13, 16, 32, 0.7);
