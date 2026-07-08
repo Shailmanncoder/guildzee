@@ -472,25 +472,30 @@ export default function GuildzeeLandingPage() {
         .dot-brand{background:var(--brand);--r:110px;animation-duration:8s;}
         .dot-teal{background:var(--teal);--r:110px;animation-duration:12s;animation-delay:-4s;}
         .dot-warn{background:var(--warn);--r:150px;animation-duration:15s;}
-        .dot-danger{background:var(--danger);--r:150px;animation-duration:10s;animation-delay:-6s;}
-
-        /* Float Windows */
+        .dot-danger{background:var(--danger);--r:150px;animation-duration:10s;animati        /* Float Windows */
         .float-window{
-          position:absolute;width:180px;background:var(--bg1);
-          border:1px solid var(--border);border-radius:18px;
-          box-shadow:0 16px 40px rgba(0,0,0,.4);padding:14px;will-change:transform;
-          transition:box-shadow .2s var(--ease);
+          position:absolute;width:180px;
+          background:rgba(13, 16, 32, 0.7);
+          backdrop-filter:blur(16px);
+          -webkit-backdrop-filter:blur(16px);
+          border:1px solid rgba(255, 255, 255, 0.08);
+          border-radius:20px;
+          box-shadow:0 24px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,0.06);
+          padding:14px;will-change:transform;
+          transition:box-shadow .25s var(--ease), border-color .25s;
         }
-        .float-window:hover{box-shadow:0 16px 40px rgba(124,92,255,.3)!important;}
+        .float-window:hover{box-shadow:0 24px 60px rgba(124,92,255,.25)!important; border-color: rgba(124,92,255,0.3);}
         .fw-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
         .fw-avatar{width:22px;height:22px;border-radius:50%;background:var(--grad);flex-shrink:0;}
         .fw-name{font-size:12px;font-weight:700;color:var(--text1);}
         .fw-online{width:7px;height:7px;border-radius:50%;background:var(--success);margin-left:auto;}
         .fw-msgs{display:flex;flex-direction:column;gap:6px;min-height:48px;justify-content:flex-end;}
         .fw-bubble{
-          background:var(--bg3);border-radius:8px 8px 8px 2px;
+          background:rgba(255, 255, 255, 0.06);
+          border:1.5px solid rgba(255, 255, 255, 0.04);
+          border-radius:8px 8px 8px 2px;
           padding:7px 10px;font-size:11.5px;line-height:1.4;
-          color:var(--text2);max-width:95%;
+          color:var(--text1);max-width:95%;
           opacity:0;transform:translateY(6px) scale(.96);
           animation:bubbleIn .3s var(--ease) forwards;
         }
@@ -529,17 +534,22 @@ export default function GuildzeeLandingPage() {
         /* Feature Cards */
         .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
         .feature-card{
-          background:var(--bg1);border:1px solid var(--border);border-radius:20px;
+          background:rgba(13, 16, 32, 0.5);
+          backdrop-filter:blur(12px);
+          -webkit-backdrop-filter:blur(12px);
+          border:1px solid rgba(255, 255, 255, 0.05);
+          border-radius:24px;
           padding:36px 32px;min-height:220px;
           transition:transform .25s var(--ease),box-shadow .25s ease,border-color .25s;
           position:relative;overflow:hidden;
+          box-shadow: 0 12px 32px rgba(0,0,0,0.15);
         }
         .feature-card::before{
           content:'';position:absolute;inset:0;
-          background:radial-gradient(circle at top left,rgba(124,92,255,.07),transparent 70%);
+          background:radial-gradient(circle at top left,rgba(124,92,255,.09),transparent 70%);
           opacity:0;transition:opacity .25s;
         }
-        .feature-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 0 1px rgba(124,92,255,.2);border-color:rgba(124,92,255,.2);}
+        .feature-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 0 1px rgba(124,92,255,.2);border-color:rgba(124,92,255,.25);}
         .feature-card:hover::before{opacity:1;}
         .feature-icon{
           width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
@@ -552,14 +562,18 @@ export default function GuildzeeLandingPage() {
 
         /* Call section */
         .call-stage{
-          background:var(--bg1);border:1px solid var(--border);border-radius:24px;
+          background:rgba(13, 16, 32, 0.45);
+          backdrop-filter:blur(16px);
+          -webkit-backdrop-filter:blur(16px);
+          border:1px solid rgba(255, 255, 255, 0.06);
+          border-radius:28px;
           padding:24px;max-width:900px;margin:0 auto;
-          box-shadow:0 24px 60px rgba(0,0,0,.4);
+          box-shadow:0 32px 80px rgba(0,0,0,.5);
         }
         .call-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
         .call-tile{
-          position:relative;aspect-ratio:200/140;border-radius:16px;overflow:hidden;
-          background:var(--bg2);border:1px solid var(--border);
+          position:relative;aspect-ratio:200/140;border-radius:20px;overflow:hidden;
+          border:1.5px solid rgba(255, 255, 255, 0.05);
           display:flex;align-items:center;justify-content:center;
           transition:border-color .2s;
         }
@@ -567,7 +581,8 @@ export default function GuildzeeLandingPage() {
         .tile-avatar{width:48px;height:48px;position:relative;z-index:1;}
         .tile-tag{
           position:absolute;left:12px;bottom:12px;z-index:2;
-          background:rgba(7,9,16,.7);backdrop-filter:blur(6px);
+          background:rgba(7,9,16,.75);backdrop-filter:blur(8px);
+          -webkit-backdrop-filter:blur(8px);
           padding:5px 12px;border-radius:100px;font-size:12px;font-weight:700;
           display:flex;align-items:center;gap:7px;color:var(--text1);
         }
@@ -585,7 +600,9 @@ export default function GuildzeeLandingPage() {
         }
         @keyframes shimmerSweep{from{background-position:200% 0}to{background-position:-200% 0}}
         .caption-bar{
-          background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+          background:rgba(255,255,255,0.03);
+          border:1px solid rgba(255,255,255,0.05);
+          border-radius:16px;
           padding:14px 20px;font-size:14px;display:flex;gap:10px;align-items:baseline;
           margin-bottom:16px;min-height:52px;
         }
@@ -594,12 +611,12 @@ export default function GuildzeeLandingPage() {
         .call-controls{display:flex;justify-content:center;gap:12px;}
         .call-btn{
           width:52px;height:52px;border-radius:50%;
-          border:1px solid var(--border);background:var(--bg2);
+          border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.04);
           color:var(--text1);display:flex;align-items:center;justify-content:center;
           cursor:pointer;transition:transform .15s var(--ease),background .15s,box-shadow .15s;
           flex-shrink:0;
         }
-        .call-btn:hover{transform:translateY(-3px);background:var(--bg3);box-shadow:0 6px 18px rgba(0,0,0,.3);}
+        .call-btn:hover{transform:translateY(-3px);background:rgba(255,255,255,0.09);box-shadow:0 6px 18px rgba(0,0,0,.3);}
         .call-btn.active{background:rgba(53,231,210,.15);border-color:var(--teal);color:var(--teal);}
         .call-btn.danger{background:var(--danger);border-color:var(--danger);color:#04030A;}
         .call-btn.danger:hover{background:#ff7683;box-shadow:0 6px 20px rgba(255,92,108,.4);}
@@ -609,7 +626,10 @@ export default function GuildzeeLandingPage() {
           max-width:1300px;margin:0 auto;padding:80px 40px 120px;text-align:center;
         }
         .cta-card{
-          background:var(--bg1);border:1px solid rgba(124,92,255,.2);border-radius:28px;
+          background:rgba(13, 16, 32, 0.45);
+          backdrop-filter:blur(16px);
+          -webkit-backdrop-filter:blur(16px);
+          border:1px solid rgba(124,92,255,.2);border-radius:32px;
           padding:80px 48px;position:relative;overflow:hidden;
         }
         .cta-card::before{
@@ -626,7 +646,11 @@ export default function GuildzeeLandingPage() {
         /* Stats */
         .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:64px;}
         .stat-card{
-          background:var(--bg1);border:1px solid var(--border);border-radius:18px;
+          background:rgba(13, 16, 32, 0.4);
+          backdrop-filter:blur(10px);
+          -webkit-backdrop-filter:blur(10px);
+          border:1px solid rgba(255, 255, 255, 0.05);
+          border-radius:20px;
           padding:28px 24px;text-align:center;
           transition:transform .2s var(--ease),border-color .2s;
         }
