@@ -25,8 +25,8 @@ function CallTileVideo({ name, color, active, index }: { name: string; color: st
 
       // Gradient background
       const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-      bgGrad.addColorStop(0, '#0d1020');
-      bgGrad.addColorStop(1, '#070910');
+      bgGrad.addColorStop(0, '#EAEFF5');
+      bgGrad.addColorStop(1, '#FFFFFF');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
@@ -41,21 +41,21 @@ function CallTileVideo({ name, color, active, index }: { name: string; color: st
         const rad = 45 + Math.sin(time * 2) * 3;
         const glow = ctx.createRadialGradient(0, 0, 5, 0, 0, rad + 15);
         glow.addColorStop(0, color);
-        glow.addColorStop(0.3, 'rgba(124, 92, 255, 0.45)');
+        glow.addColorStop(0.3, 'rgba(124, 92, 255, 0.25)');
         glow.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.fillStyle = glow;
         ctx.beginPath();
         ctx.arc(0, 0, rad + 15, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.strokeStyle = '#ffffff';
+        ctx.strokeStyle = '#7C5CFF';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.arc(0, 0, rad, 0, Math.PI * 2);
         ctx.stroke();
 
         // Horizontal line
-        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.strokeStyle = 'rgba(124, 92, 255, 0.25)';
         ctx.beginPath();
         ctx.ellipse(0, 0, rad, rad * 0.35, Math.sin(time) * 0.2, 0, Math.PI * 2);
         ctx.stroke();
@@ -177,7 +177,7 @@ export default function GuildzeeLandingPage() {
   useEffect(() => {
     if (!mounted) return;
     document.body.style.overflow = 'auto';
-    document.body.style.background = '#070910';
+    document.body.style.background = '#F4F6FA';
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -319,19 +319,19 @@ export default function GuildzeeLandingPage() {
   if (!mounted) return <div style={{ minHeight: '100vh', background: '#070910' }} />;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#070910', color: '#E8EAF2', fontFamily: "'Inter',sans-serif", overflowX: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg0)', color: 'var(--text1)', fontFamily: "'Inter',sans-serif", overflowX: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
-        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(124,92,255,.3);border-radius:3px}
-        ::selection{background:rgba(124,92,255,.4);color:#fff}
+        ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+        ::selection{background:rgba(124,92,255,.15);color:var(--brand)}
         :root{
-          --brand:#7C5CFF;--teal:#35E7D2;--warn:#FFB020;--danger:#FF5C6C;--success:#3DDC84;
-          --bg0:#070910;--bg1:#0D1020;--bg2:#141728;--bg3:#1C2035;
-          --border:rgba(255,255,255,.07);--text1:#F0F2FF;--text2:#8B92AD;--text3:#4A5168;
-          --grad:linear-gradient(135deg,#7C5CFF,#35E7D2);
+          --brand:#7C5CFF;--teal:#00C9B1;--warn:#E0A000;--danger:#FF4A5A;--success:#23D18B;
+          --bg0:#F4F6FA;--bg1:#FFFFFF;--bg2:#EAEFF5;--bg3:#DFE4ED;
+          --border:rgba(0,0,0,.08);--text1:#1B1E2B;--text2:#5A6178;--text3:#8C95AD;
+          --grad:linear-gradient(135deg,#7C5CFF,#00C9B1);
           --ease:cubic-bezier(.16,1,.3,1);
-          --shadow-glow:0 0 40px rgba(124,92,255,.4);
+          --shadow-glow:0 8px 30px rgba(124,92,255,.15);
         }
 
         /* Nav */
@@ -342,10 +342,10 @@ export default function GuildzeeLandingPage() {
           transition:background .25s,border-color .25s,backdrop-filter .25s;
           border-bottom:1px solid transparent;
         }
-        .nav.scrolled{background:rgba(13,16,32,.92);backdrop-filter:blur(16px);border-bottom-color:var(--border);}
+        .nav.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(16px);border-bottom-color:var(--border);box-shadow:0 8px 30px rgba(0,0,0,0.04);}
         .nav-left{display:flex;align-items:center;gap:44px;}
         .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;color:var(--text1);text-decoration:none;letter-spacing:-.02em;}
-        .logo-icon{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 18px rgba(124,92,255,.45);transition:transform .2s var(--ease);}
+        .logo-icon{width:36px;height:36px;border-radius:10px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 18px rgba(124,92,255,.3);transition:transform .2s var(--ease);}
         .logo:hover .logo-icon{transform:rotate(8deg) scale(1.08);}
         .nav-links{display:flex;gap:32px;font-size:15px;font-weight:600;color:var(--text2);}
         .nav-links a{text-decoration:none;padding:8px 0;position:relative;transition:color .15s;}
@@ -364,15 +364,16 @@ export default function GuildzeeLandingPage() {
         }
         .btn:active{transform:scale(.96)!important;}
         .btn-primary{
-          background:var(--grad);color:#04030A;
-          box-shadow:0 4px 18px rgba(124,92,255,.4);
+          background:var(--grad);color:#fff;
+          box-shadow:0 4px 18px rgba(124,92,255,.2);
         }
-        .btn-primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 32px rgba(124,92,255,.55);}
+        .btn-primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 32px rgba(124,92,255,.35);}
         .btn-secondary{
-          background:rgba(255,255,255,.06);color:var(--text1);
-          border:1.5px solid rgba(255,255,255,.12);
+          background:var(--bg1);color:var(--text1);
+          border:1.5px solid var(--border);
+          box-shadow:0 2px 8px rgba(0,0,0,.04);
         }
-        .btn-secondary:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);transform:translateY(-1px);}
+        .btn-secondary:hover{background:var(--bg2);border-color:rgba(0,0,0,.15);transform:translateY(-1px);}
         .btn-ghost{background:transparent;color:var(--text2);padding:14px 20px;font-size:15px;}
         .btn-ghost:hover{color:var(--text1);}
 
@@ -446,14 +447,14 @@ export default function GuildzeeLandingPage() {
         .glow-layer{
           position:absolute;width:480px;height:480px;left:50%;top:50%;
           background:radial-gradient(circle,rgba(124,92,255,.3),transparent 65%);
-          transform:translate(-50%,-50%);mix-blend-mode:screen;pointer-events:none;will-change:transform;
+          transform:translate(-50%,-50%);mix-blend-mode:normal;pointer-events:none;will-change:transform;opacity:0.65;
         }
         .hall{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:360px;height:360px;will-change:transform;}
         .guild-crest{
           position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
           width:130px;height:130px;display:flex;align-items:center;justify-content:center;
           border-radius:28px;background:linear-gradient(145deg,var(--bg2),var(--bg1));
-          border:1px solid rgba(124,92,255,.25);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px rgba(124,92,255,.2);
+          border:1px solid rgba(124,92,255,.25);box-shadow:0 20px 60px rgba(0,0,0,.08),0 0 40px rgba(124,92,255,.15);
         }
         .crest-logo{font-size:56px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
         .orbit-ring{

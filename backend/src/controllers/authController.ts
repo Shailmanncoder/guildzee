@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
         displayName: validatedData.displayName,
         passwordHash,
         status: UserStatus.ONLINE, // Start as online
-        themePreference: 'dark',
+        themePreference: 'light',
         accentColor: 'purple',
         avatarConfig: {}, // Empty JSON initial creator config
       },

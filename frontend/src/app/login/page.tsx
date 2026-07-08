@@ -118,7 +118,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#070910', fontFamily: "'Inter',sans-serif", position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F4F6FA', fontFamily: "'Inter',sans-serif", position: 'relative', overflow: 'hidden' }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -127,40 +127,40 @@ export default function LoginPage() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
         @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-        @keyframes orbPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:.9}}
-        @keyframes borderGlow{0%,100%{box-shadow:0 0 0 0 rgba(102,126,234,.3)}50%{box-shadow:0 0 0 4px rgba(102,126,234,.1)}}
-        .inp{width:100%;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#E3E5E8;font-size:15px;font-family:inherit;outline:none;transition:all .25s}
-        .inp:focus{border-color:rgba(102,126,234,.7);background:rgba(102,126,234,.06);box-shadow:0 0 0 4px rgba(102,126,234,.12)}
-        .inp::placeholder{color:#3A3F52}
-        .inp:hover:not(:focus){border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+        @keyframes orbPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.15);opacity:.75}}
+        @keyframes borderGlow{0%,100%{box-shadow:0 0 0 0 rgba(102,126,234,.2)}50%{box-shadow:0 0 0 4px rgba(102,126,234,.08)}}
+        .inp{width:100%;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid rgba(0,0,0,.08);background:rgba(0,0,0,.03);color:#1B1E2B;font-size:15px;font-family:inherit;outline:none;transition:all .25s}
+        .inp:focus{border-color:rgba(102,126,234,.7);background:rgba(102,126,234,.04);box-shadow:0 0 0 4px rgba(102,126,234,.08)}
+        .inp::placeholder{color:#8C95AD}
+        .inp:hover:not(:focus){border-color:rgba(0,0,0,.15);background:rgba(0,0,0,.05)}
         .btn-submit{width:100%;height:52px;border:none;border-radius:14px;cursor:pointer;font-size:16px;font-weight:800;font-family:inherit;color:#fff;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);background-size:200%;transition:all .3s;letter-spacing:.02em}
-        .btn-submit:hover:not(:disabled){background-position:right center;transform:translateY(-1px);box-shadow:0 8px 32px rgba(102,126,234,.45)}
-        .btn-submit:active:not(:disabled){transform:translateY(0);box-shadow:0 4px 16px rgba(102,126,234,.3)}
+        .btn-submit:hover:not(:disabled){background-position:right center;transform:translateY(-1px);box-shadow:0 8px 32px rgba(102,126,234,.25)}
+        .btn-submit:active:not(:disabled){transform:translateY(0);box-shadow:0 4px 16px rgba(102,126,234,.15)}
         .btn-submit:disabled{opacity:.7;cursor:not-allowed}
         .card{animation:fadeUp .5s cubic-bezier(.16,1,.3,1) both}
         .g-logo{animation:float 4s ease infinite}
-        .label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#4A5168;margin-bottom:10px;text-transform:uppercase}
+        .label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#5A6178;margin-bottom:10px;text-transform:uppercase}
       `}</style>
 
       {/* Animated canvas background */}
       <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
 
       {/* Glowing orbs */}
-      <div style={{ position: 'fixed', top: '-20vh', left: '-15vw', width: '60vw', height: '60vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(102,126,234,.18) 0%,transparent 70%)', animation: 'orbPulse 8s ease infinite', pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'fixed', bottom: '-20vh', right: '-15vw', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(118,75,162,.15) 0%,transparent 70%)', animation: 'orbPulse 10s ease infinite .5s', pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'fixed', top: '35%', right: '5%', width: '30vw', height: '30vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(240,147,251,.08) 0%,transparent 70%)', animation: 'orbPulse 7s ease infinite 1s', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'fixed', top: '-20vh', left: '-15vw', width: '60vw', height: '60vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(102,126,234,.12) 0%,transparent 70%)', animation: 'orbPulse 8s ease infinite', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'fixed', bottom: '-20vh', right: '-15vw', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(118,75,162,.1) 0%,transparent 70%)', animation: 'orbPulse 10s ease infinite .5s', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'fixed', top: '35%', right: '5%', width: '30vw', height: '30vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(240,147,251,.05) 0%,transparent 70%)', animation: 'orbPulse 7s ease infinite 1s', pointerEvents: 'none', zIndex: 0 }} />
 
       {/* Card */}
-      <div className="card" style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 440, margin: '0 16px', background: 'rgba(13,14,17,.85)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRadius: 28, border: '1px solid rgba(255,255,255,.07)', overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08)' }}>
+      <div className="card" style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 440, margin: '0 16px', background: 'rgba(255,255,255,.75)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRadius: 28, border: '1px solid rgba(0,0,0,.08)', overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5)' }}>
         {/* Rainbow top bar */}
         <div style={{ height: 3, background: 'linear-gradient(90deg,#667eea,#764ba2,#f093fb,#f5576c,#667eea)', backgroundSize: '200%', animation: 'shimmer 3s linear infinite' }} />
 
         <div style={{ padding: '40px 40px 44px' }}>
           {/* Logo */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 36 }}>
-            <div className="g-logo" style={{ width: 64, height: 64, borderRadius: 20, background: 'linear-gradient(135deg,#667eea,#764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 900, color: '#fff', marginBottom: 20, boxShadow: '0 12px 40px rgba(102,126,234,.5), inset 0 1px 0 rgba(255,255,255,.2)' }}>G</div>
-            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900, color: '#fff', letterSpacing: '-.02em' }}>Welcome back</h1>
-            <p style={{ margin: '8px 0 0', fontSize: 14, color: '#4A5168', fontWeight: 500 }}>So excited to see you again! 🎉</p>
+            <div className="g-logo" style={{ width: 64, height: 64, borderRadius: 20, background: 'linear-gradient(135deg,#667eea,#764ba2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, fontWeight: 900, color: '#fff', marginBottom: 20, boxShadow: '0 12px 40px rgba(102,126,234,.3), inset 0 1px 0 rgba(255,255,255,.2)' }}>G</div>
+            <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900, color: '#1B1E2B', letterSpacing: '-.02em' }}>Welcome back</h1>
+            <p style={{ margin: '8px 0 0', fontSize: 14, color: '#5A6178', fontWeight: 500 }}>So excited to see you again! 🎉</p>
           </div>
 
           {/* Error */}
@@ -200,7 +200,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: 28, fontSize: 14, color: '#4A5168' }}>
+          <p style={{ textAlign: 'center', marginTop: 28, fontSize: 14, color: '#5A6178' }}>
             Need an account?{' '}
             <Link href="/signup" style={{ color: '#667eea', fontWeight: 700, textDecoration: 'none' }}
               onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}

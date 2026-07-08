@@ -156,6 +156,7 @@ export default function Dashboard() {
   const [addFriendUsername, setAddFriendUsername] = useState('');
   const [addFriendStatus, setAddFriendStatus] = useState<{ type: 'success' | 'error' | null; msg: string }>({ type: null, msg: '' });
   const [inviteCode, setInviteCode] = useState('');
+  const [mobileActiveView, setMobileActiveView] = useState<'sidebar' | 'chat' | 'members'>('sidebar');
 
   // Form state
   const [groupName, setGroupName] = useState('');
@@ -207,6 +208,7 @@ export default function Dashboard() {
   async function openChat(id: string, type: 'dm' | 'group' | 'channel', name: string) {
     setActiveTab(id); setActiveTabType(type); setActiveTabName(name);
     setReplyTo(null); setShowEmoji(false); setShowGif(false); setUnreadCount(0);
+    setMobileActiveView('chat');
     if (id === 'friends') return;
     try {
       const ep = type === 'dm' ? `/api/messages/dm/${id}` : type === 'group' ? `/api/messages/groups/${id}` : `/api/channels/${id}/messages`;
@@ -343,24 +345,39 @@ export default function Dashboard() {
   const xpPct = Math.min(100, Math.round((xp % xpMax) / xpMax * 100));
   if (loading || !token) {
     return (
-      <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#070910', color: '#fff', fontFamily: "'Inter',sans-serif" }}>
+      <div style={{ display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center', background: '#F4F6FA', color: '#1B1E2B', fontFamily: "'Inter',sans-serif" }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
           <div style={{ width: 40, height: 40, borderRadius: '50%', border: '4px solid rgba(124,92,255,.15)', borderTopColor: '#7C5CFF', animation: 'spin .8s linear infinite' }} />
-          <span style={{ fontSize: 11, fontWeight: 800, color: '#4A5168', letterSpacing: '.08em' }}>VERIFYING SESSION…</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', fontFamily: "'Inter',sans-serif", background: '#070910', color: '#C8CBDB' }}>
+    <div className={`show-${mobileActiveView}`} style={{ display: 'flex', height: '100vh', width: '100vw', overflow: 'hidden', fontFamily: "'Inter',sans-serif", background: 'var(--bg0)', color: 'var(--text1)' }}>
 
       {/* ─── Global styles ────────────────────────────────────── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
-        ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
-        ::selection{background:rgba(124,92,255,.4);color:#fff}
+        :root {
+          --brand: #7C5CFF;
+          --teal: #00C9B1;
+          --warn: #E0A000;
+          --danger: #FF4A5A;
+          --success: #23D18B;
+          --bg0: #F4F6FA;
+          --bg1: #FFFFFF;
+          --bg2: #EAEFF5;
+          --bg3: #DFE4ED;
+          --border: rgba(0, 0, 0, 0.08);
+          --text1: #1B1E2B;
+          --text2: #5A6178;
+          --text3: #8C95AD;
+          --grad: linear-gradient(135deg, #7C5CFF, #00C9B1);
+        }
+        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25)}
+        ::selection{background:rgba(124,92,255,.15);color:var(--brand)}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
         @keyframes popIn{from{opacity:0;transform:scale(.94) translateY(6px)}to{opacity:1;transform:none}}
@@ -368,25 +385,37 @@ export default function Dashboard() {
         @keyframes blink{0%,100%{opacity:.15}50%{opacity:1}}
         @keyframes ring{0%{transform:scale(1);opacity:.5}100%{transform:scale(2);opacity:0}}
         @keyframes spin{to{transform:rotate(360deg)}}
-        @keyframes glow{0%,100%{box-shadow:0 0 18px rgba(124,92,255,.35)}50%{box-shadow:0 0 32px rgba(124,92,255,.65)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 18px rgba(124,92,255,.25)}50%{box-shadow:0 0 32px rgba(124,92,255,.45)}}
         .pill-hover{transition:background .14s,color .14s,border-color .14s}
-        .pill-hover:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
-        .pill-active{background:rgba(124,92,255,.16)!important;color:#fff!important}
-        .msg-row:hover{background:rgba(255,255,255,.025)}
+        .pill-hover:hover{background:rgba(0,0,0,.045)!important;color:var(--text1)!important}
+        .pill-active{background:rgba(124,92,255,.12)!important;color:var(--brand)!important}
+        .msg-row:hover{background:rgba(0,0,0,.01)}
         .msg-row:hover .msg-actions{opacity:1;transform:none}
         .msg-actions{opacity:0;transform:translateY(-2px);transition:opacity .15s,transform .15s}
         .srv-btn{transition:border-radius .25s,background .2s,transform .2s,box-shadow .2s}
-        .srv-btn:hover{border-radius:18px!important;transform:scale(1.06)}
+        .srv-btn:hover{border-radius:16px!important;transform:scale(1.06)}
         .chan-btn{transition:background .12s,color .12s}
-        .chan-btn:hover{background:rgba(255,255,255,.055)!important;color:#e0e2ef!important}
+        .chan-btn:hover{background:rgba(0,0,0,.04)!important;color:var(--text1)!important}
         .icon-act{transition:background .14s,color .14s,transform .1s}
-        .icon-act:hover{background:rgba(255,255,255,.08)!important;color:#fff!important}
+        .icon-act:hover{background:rgba(0,0,0,.05)!important;color:var(--text1)!important}
         .icon-act:active{transform:scale(.93)}
         input,textarea{outline:none;font-family:inherit}
-        .focus-ring:focus{box-shadow:0 0 0 3px rgba(124,92,255,.35)}
+        .focus-ring:focus{box-shadow:0 0 0 3px rgba(124,92,255,.25)}
         .tooltip{position:relative}
-        .tooltip-tip{position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:#111420;color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;transform:translateY(-50%) translateX(-4px);border:1px solid rgba(255,255,255,.08);z-index:100}
+        .tooltip-tip{position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);background:#1B1E2B;color:#fff;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;transform:translateY(-50%) translateX(-4px);border:1px solid rgba(255,255,255,.08);z-index:100}
         .tooltip:hover .tooltip-tip{opacity:1;transform:translateY(-50%) translateX(0)}
+        .mobile-only-btn{display:none}
+        @media (max-width:768px){
+          .mobile-only-btn{display:flex!important}
+          .col-rail{display:none!important}
+          .col-sidebar{display:none!important;width:100%!important;border-right:none!important}
+          .col-chat{display:none!important;width:100%!important;border-right:none!important}
+          .col-members{display:none!important;width:100%!important;border-left:none!important}
+          .show-sidebar .col-rail{display:flex!important}
+          .show-sidebar .col-sidebar{display:flex!important}
+          .show-chat .col-chat{display:flex!important}
+          .show-members .col-members{display:flex!important}
+        }
       `}</style>
 
       {/* voice audio outputs */}
@@ -395,7 +424,7 @@ export default function Dashboard() {
       {/* ════════════════════════════════════════════
           RAIL — 72px
       ════════════════════════════════════════════ */}
-      <nav style={{ width: 72, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 12, paddingBottom: 12, gap: 8, overflowY: 'auto', background: '#070910', borderRight: '1px solid rgba(255,255,255,.04)', scrollbarWidth: 'none' }}>
+      <nav className="col-rail" style={{ width: 72, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 12, paddingBottom: 12, gap: 8, overflowY: 'auto', background: 'var(--bg0)', borderRight: '1px solid var(--border)', scrollbarWidth: 'none' }}>
 
         {/* Home */}
         <div className="tooltip" style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', height: 52 }}>
@@ -444,7 +473,7 @@ export default function Dashboard() {
       {/* ════════════════════════════════════════════
           SIDEBAR — 248px
       ════════════════════════════════════════════ */}
-      <aside style={{ width: 248, flexShrink: 0, display: 'flex', flexDirection: 'column', background: '#0E0F17', borderRight: '1px solid rgba(255,255,255,.05)', overflow: 'hidden' }}>
+      <aside className="col-sidebar" style={{ width: 248, flexShrink: 0, display: 'flex', flexDirection: 'column', background: 'var(--bg1)', borderRight: '1px solid var(--border)', overflow: 'hidden' }}>
 
         {/* Header */}
         <div style={{ height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', borderBottom: '1px solid rgba(255,255,255,.05)', flexShrink: 0 }}>
@@ -629,13 +658,18 @@ export default function Dashboard() {
       {/* ════════════════════════════════════════════
           MAIN CONTENT
       ════════════════════════════════════════════ */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#12131C' }}>
+      <div className="col-chat" style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: 'var(--bg1)' }}>
 
         {/* Top bar */}
-        <header style={{ height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', borderBottom: '1px solid rgba(255,255,255,.05)', flexShrink: 0, background: '#12131C' }}>
+        <header style={{ height: 56, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', borderBottom: '1px solid var(--border)', flexShrink: 0, background: 'var(--bg1)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-            {isChatOpen && <span style={{ fontWeight: 800, fontSize: 18, color: '#3D4259' }}>{activeTabType === 'channel' ? '#' : activeTabType === 'group' ? '⊕' : '@'}</span>}
-            <h1 style={{ fontWeight: 800, fontSize: 16, color: '#E0E2EF', margin: 0, letterSpacing: '-.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {/* Mobile hamburger menu to go back to sidebars */}
+            <button className="mobile-only-btn" onClick={() => setMobileActiveView('sidebar')}
+              style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginRight: 8, display: 'none', alignItems: 'center', justifyContent: 'center' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+            </button>
+            {isChatOpen && <span style={{ fontWeight: 800, fontSize: 18, color: 'var(--text3)' }}>{activeTabType === 'channel' ? '#' : activeTabType === 'group' ? '⊕' : '@'}</span>}
+            <h1 style={{ fontWeight: 800, fontSize: 16, color: 'var(--text1)', margin: 0, letterSpacing: '-.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {!isChatOpen ? 'Friends' : chatTitle}
             </h1>
             {isChatOpen && activeTabType === 'dm' && recipient && (
@@ -650,26 +684,33 @@ export default function Dashboard() {
                   { label: 'Video Call', icon: '🎥', action: () => initiateCall(recipient.id, recipient.displayName || recipient.username, 'video') },
                 ].map(b => (
                   <button key={b.label} className="icon-act" onClick={b.action} title={b.label}
-                    style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,.05)', border: 'none', cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--bg2)', border: 'none', cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {b.icon}
                   </button>
                 ))}
-                <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,.07)' }} />
+                <div style={{ width: 1, height: 20, background: 'var(--border)' }} />
               </>
             )}
             {unreadCount > 0 && (
               <button onClick={() => setUnreadCount(0)}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 10, background: 'linear-gradient(135deg,#7C5CFF,#35E7D2)', border: 'none', cursor: 'pointer', color: '#04030A', fontWeight: 800, fontSize: 13 }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 14px', borderRadius: 10, background: 'linear-gradient(135deg,#7C5CFF,#35E7D2)', border: 'none', cursor: 'pointer', color: '#fff', fontWeight: 800, fontSize: 13 }}>
                 🔔 {unreadCount} new
               </button>
             )}
             {/* Search */}
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <svg style={{ position: 'absolute', left: 10, pointerEvents: 'none', color: '#3D4259' }} width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
+              <svg style={{ position: 'absolute', left: 10, pointerEvents: 'none', color: 'var(--text3)' }} width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>
               <input placeholder="Search…" className="focus-ring"
-                style={{ background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 10, padding: '7px 12px 7px 30px', fontSize: 13, color: '#C8CBDB', width: 140, transition: 'width .2s' }}
+                style={{ background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 10, padding: '7px 12px 7px 30px', fontSize: 13, color: 'var(--text1)', width: 140, transition: 'width .2s' }}
                 onFocus={e => e.currentTarget.style.width = '200px'} onBlur={e => e.currentTarget.style.width = '140px'} />
             </div>
+            {/* Mobile details toggle button */}
+            {isChatOpen && (
+              <button className="mobile-only-btn" onClick={() => setMobileActiveView(mobileActiveView === 'members' ? 'chat' : 'members')}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginLeft: 8, display: 'none', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </button>
+            )}
           </div>
         </header>
 
@@ -939,7 +980,7 @@ export default function Dashboard() {
                 )}
 
                 <form onSubmit={sendMessage}>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, padding: '12px 16px', background: 'rgba(255,255,255,.045)', border: '1px solid rgba(255,255,255,.08)', borderRadius: replyTo || attachedFile ? '0 0 16px 16px' : 16, transition: 'border-color .2s' }}
+                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 12, padding: '12px 16px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: replyTo || attachedFile ? '0 0 16px 16px' : 16, transition: 'border-color .2s' }}
                     onFocus={() => { }}>
                     {/* Attach */}
                     <button type="button" onClick={() => fileInputRef.current?.click()}
@@ -960,7 +1001,7 @@ export default function Dashboard() {
                       onKeyDown={onInputKey}
                       placeholder={`Message ${activeTabType === 'channel' ? '#' : '@'}${chatTitle}`}
                       rows={1}
-                      style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#C8CBDB', fontSize: 15, lineHeight: 1.5, resize: 'none', height: 24, maxHeight: 140, fontFamily: 'inherit', padding: 0 }} />
+                      style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', color: 'var(--text1)', fontSize: 15, lineHeight: 1.5, resize: 'none', height: 24, maxHeight: 140, fontFamily: 'inherit', padding: 0 }} />
 
                     {/* Right side */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
@@ -991,7 +1032,11 @@ export default function Dashboard() {
 
           {/* ── Members panel ── */}
           {isChatOpen && (
-            <aside style={{ width: 240, flexShrink: 0, overflowY: 'auto', background: '#0E0F17', borderLeft: '1px solid rgba(255,255,255,.05)', padding: '16px 8px' }}>
+            <aside className="col-members" style={{ width: 240, flexShrink: 0, overflowY: 'auto', background: 'var(--bg1)', borderLeft: '1px solid var(--border)', padding: '16px 8px' }}>
+              <button className="mobile-only-btn" onClick={() => setMobileActiveView('chat')}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginBottom: 12, display: 'none', alignItems: 'center', gap: 6, color: 'var(--brand)', fontWeight: 800, fontSize: 13 }}>
+                ← Back to Chat
+              </button>
               {onlineFriendsList.length > 0 && (
                 <div style={{ marginBottom: 20 }}>
                   <p style={{ fontSize: 11, fontWeight: 800, color: '#3D4259', textTransform: 'uppercase', letterSpacing: '.07em', padding: '0 8px', marginBottom: 8 }}>Online — {onlineFriendsList.length}</p>

@@ -104,7 +104,7 @@ export default function SignupPage() {
   const STEPS = ['Account', 'Profile', 'Password'];
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#070910', fontFamily: "'Inter',sans-serif", position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F4F6FA', fontFamily: "'Inter',sans-serif", position: 'relative', overflow: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;-webkit-font-smoothing:antialiased}
@@ -112,32 +112,32 @@ export default function SignupPage() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
         @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-        @keyframes orbPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:1}}
+        @keyframes orbPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.12);opacity:.75}}
         @keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
-        .s-inp{width:100%;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#E3E5E8;font-size:15px;font-family:inherit;outline:none;transition:all .25s}
-        .s-inp:focus{border-color:rgba(118,75,162,.7);background:rgba(118,75,162,.06);box-shadow:0 0 0 4px rgba(118,75,162,.12)}
-        .s-inp::placeholder{color:#3A3F52}
-        .s-inp:hover:not(:focus){border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+        .s-inp{width:100%;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid rgba(0,0,0,.08);background:rgba(0,0,0,.03);color:#1B1E2B;font-size:15px;font-family:inherit;outline:none;transition:all .25s}
+        .s-inp:focus{border-color:rgba(118,75,162,.7);background:rgba(118,75,162,.04);box-shadow:0 0 0 4px rgba(118,75,162,.08)}
+        .s-inp::placeholder{color:#8C95AD}
+        .s-inp:hover:not(:focus){border-color:rgba(0,0,0,.15);background:rgba(0,0,0,.05)}
         .s-btn{width:100%;height:52px;border:none;border-radius:14px;cursor:pointer;font-size:16px;font-weight:800;font-family:inherit;color:#fff;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);background-size:200%;transition:all .3s}
-        .s-btn:hover:not(:disabled){background-position:right;transform:translateY(-1px);box-shadow:0 8px 32px rgba(118,75,162,.45)}
+        .s-btn:hover:not(:disabled){background-position:right;transform:translateY(-1px);box-shadow:0 8px 32px rgba(118,75,162,.25)}
         .s-btn:disabled{opacity:.7;cursor:not-allowed}
-        .s-lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#4A5168;margin-bottom:10px;text-transform:uppercase}
+        .s-lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#5A6178;margin-bottom:10px;text-transform:uppercase}
         .step-slide{animation:slideIn .35s cubic-bezier(.16,1,.3,1) both}
       `}</style>
 
       <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'fixed', top: '-25vh', right: '-10vw', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(118,75,162,.2) 0%,transparent 70%)', animation: 'orbPulse 9s ease infinite', pointerEvents: 'none', zIndex: 0 }} />
-      <div style={{ position: 'fixed', bottom: '-20vh', left: '-10vw', width: '50vw', height: '50vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(102,126,234,.16) 0%,transparent 70%)', animation: 'orbPulse 11s ease infinite .8s', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'fixed', top: '-25vh', right: '-10vw', width: '55vw', height: '55vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(118,75,162,.1) 0%,transparent 70%)', animation: 'orbPulse 9s ease infinite', pointerEvents: 'none', zIndex: 0 }} />
+      <div style={{ position: 'fixed', bottom: '-20vh', left: '-10vw', width: '50vw', height: '50vw', borderRadius: '50%', background: 'radial-gradient(circle,rgba(102,126,234,.1) 0%,transparent 70%)', animation: 'orbPulse 11s ease infinite .8s', pointerEvents: 'none', zIndex: 0 }} />
 
-      <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 460, margin: '16px', background: 'rgba(13,14,17,.88)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRadius: 28, border: '1px solid rgba(255,255,255,.07)', overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08)', animation: 'fadeUp .5s cubic-bezier(.16,1,.3,1) both' }}>
+      <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 460, margin: '16px', background: 'rgba(255,255,255,.75)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRadius: 28, border: '1px solid rgba(0,0,0,.08)', overflow: 'hidden', boxShadow: '0 32px 80px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.5)', animation: 'fadeUp .5s cubic-bezier(.16,1,.3,1) both' }}>
         <div style={{ height: 3, background: 'linear-gradient(90deg,#f093fb,#764ba2,#667eea,#764ba2,#f093fb)', backgroundSize: '200%', animation: 'shimmer 3s linear infinite' }} />
 
         <div style={{ padding: '40px 40px 44px' }}>
           {/* Logo + title */}
           <div style={{ textAlign: 'center', marginBottom: 28 }}>
-            <div style={{ width: 60, height: 60, borderRadius: 18, background: 'linear-gradient(135deg,#667eea,#764ba2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, fontWeight: 900, color: '#fff', marginBottom: 18, boxShadow: '0 12px 40px rgba(118,75,162,.5), inset 0 1px 0 rgba(255,255,255,.2)', animation: 'float 4s ease infinite' }}>G</div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: '#fff', letterSpacing: '-.02em' }}>Create your account</h1>
-            <p style={{ margin: '8px 0 0', fontSize: 14, color: '#4A5168' }}>Join the Guildzee community ✨</p>
+            <div style={{ width: 60, height: 60, borderRadius: 18, background: 'linear-gradient(135deg,#667eea,#764ba2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, fontWeight: 900, color: '#fff', marginBottom: 18, boxShadow: '0 12px 40px rgba(118,75,162,.3), inset 0 1px 0 rgba(255,255,255,.2)', animation: 'float 4s ease infinite' }}>G</div>
+            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: '#1B1E2B', letterSpacing: '-.02em' }}>Create your account</h1>
+            <p style={{ margin: '8px 0 0', fontSize: 14, color: '#5A6178' }}>Join the Guildzee community ✨</p>
           </div>
 
           {/* Step indicator */}
@@ -145,12 +145,12 @@ export default function SignupPage() {
             {STEPS.map((s, i) => (
               <React.Fragment key={s}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: i + 1 <= step ? 'linear-gradient(135deg,#667eea,#764ba2)' : 'rgba(255,255,255,.06)', border: i + 1 === step ? '2px solid #764ba2' : '2px solid rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: i + 1 <= step ? '#fff' : '#3A3F52', transition: 'all .3s', boxShadow: i + 1 === step ? '0 0 16px rgba(118,75,162,.5)' : 'none' }}>
+                  <div style={{ width: 32, height: 32, borderRadius: '50%', background: i + 1 <= step ? 'linear-gradient(135deg,#667eea,#764ba2)' : 'rgba(0,0,0,.04)', border: i + 1 === step ? '2px solid #764ba2' : '2px solid rgba(0,0,0,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: i + 1 <= step ? '#fff' : '#8C95AD', transition: 'all .3s', boxShadow: i + 1 === step ? '0 0 16px rgba(118,75,162,.25)' : 'none' }}>
                     {i + 1 < step ? '✓' : i + 1}
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: i + 1 === step ? '#764ba2' : '#3A3F52', marginTop: 6, letterSpacing: '.06em', textTransform: 'uppercase' }}>{s}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, color: i + 1 === step ? '#764ba2' : '#8C95AD', marginTop: 6, letterSpacing: '.06em', textTransform: 'uppercase' }}>{s}</span>
                 </div>
-                {i < STEPS.length - 1 && <div style={{ height: 2, flex: 1, background: i + 1 < step ? 'linear-gradient(90deg,#667eea,#764ba2)' : 'rgba(255,255,255,.06)', borderRadius: 1, marginBottom: 18, transition: 'background .4s' }} />}
+                {i < STEPS.length - 1 && <div style={{ height: 2, flex: 1, background: i + 1 < step ? 'linear-gradient(90deg,#667eea,#764ba2)' : 'rgba(0,0,0,.06)', borderRadius: 1, marginBottom: 18, transition: 'background .4s' }} />}
               </React.Fragment>
             ))}
           </div>
@@ -161,7 +161,7 @@ export default function SignupPage() {
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
               <div style={{ fontSize: 20, fontWeight: 900, color: '#23D18B', marginBottom: 8 }}>Welcome to Guildzee!</div>
-              <div style={{ fontSize: 14, color: '#4A5168' }}>Taking you to your dashboard…</div>
+              <div style={{ fontSize: 14, color: '#5A6178' }}>Taking you to your dashboard…</div>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
@@ -179,14 +179,14 @@ export default function SignupPage() {
                   <div>
                     <label className="s-lbl">Username</label>
                     <input className="s-inp" type="text" value={username} onChange={e => setUsername(e.target.value.toLowerCase().replace(/\s/g, '_'))} required placeholder="cooluser123" pattern="[a-z0-9_]{3,20}" title="3-20 lowercase letters, numbers, underscores" />
-                    <div style={{ fontSize: 11, color: '#3A3F52', marginTop: 6 }}>Lowercase letters, numbers, underscores only</div>
+                    <div style={{ fontSize: 11, color: '#5A6178', marginTop: 6 }}>Lowercase letters, numbers, underscores only</div>
                   </div>
                   <div>
                     <label className="s-lbl">Display Name</label>
                     <input className="s-inp" type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} required placeholder="Cool User" maxLength={32} />
                   </div>
                   <div style={{ display: 'flex', gap: 12 }}>
-                    <button type="button" onClick={() => setStep(1)} style={{ flex: 1, height: 52, border: '1.5px solid rgba(255,255,255,.1)', borderRadius: 14, background: 'rgba(255,255,255,.04)', color: '#8890A6', cursor: 'pointer', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', transition: 'all .2s' }}>← Back</button>
+                    <button type="button" onClick={() => setStep(1)} style={{ flex: 1, height: 52, border: '1.5px solid rgba(0,0,0,.08)', borderRadius: 14, background: 'rgba(255,255,255,.8)', color: '#5A6178', cursor: 'pointer', fontWeight: 700, fontSize: 15, fontFamily: 'inherit', transition: 'all .2s' }}>← Back</button>
                     <button type="button" className="s-btn" style={{ flex: 2 }} onClick={() => { if (!username || !displayName) { setError('Fill all fields'); return; } setError(''); setStep(3); }}>Continue →</button>
                   </div>
                 </div>
@@ -202,7 +202,7 @@ export default function SignupPage() {
                     {password && (
                       <div style={{ marginTop: 10 }}>
                         <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
-                          {[1, 2, 3, 4].map(i => <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= strength ? strengthColor : 'rgba(255,255,255,.08)', transition: 'background .3s' }} />)}
+                          {[1, 2, 3, 4].map(i => <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= strength ? strengthColor : 'rgba(0,0,0,.06)', transition: 'background .3s' }} />)}
                         </div>
                         <div style={{ fontSize: 11, color: strengthColor, fontWeight: 700 }}>{strengthLabel}</div>
                       </div>
@@ -214,7 +214,7 @@ export default function SignupPage() {
                     {confirm && confirm !== password && <div style={{ fontSize: 11, color: '#F23F42', marginTop: 6, fontWeight: 600 }}>Passwords don't match</div>}
                   </div>
                   <div style={{ display: 'flex', gap: 12 }}>
-                    <button type="button" onClick={() => setStep(2)} style={{ flex: 1, height: 52, border: '1.5px solid rgba(255,255,255,.1)', borderRadius: 14, background: 'rgba(255,255,255,.04)', color: '#8890A6', cursor: 'pointer', fontWeight: 700, fontSize: 15, fontFamily: 'inherit' }}>← Back</button>
+                    <button type="button" onClick={() => setStep(2)} style={{ flex: 1, height: 52, border: '1.5px solid rgba(0,0,0,.08)', borderRadius: 14, background: 'rgba(255,255,255,.8)', color: '#5A6178', cursor: 'pointer', fontWeight: 700, fontSize: 15, fontFamily: 'inherit' }}>← Back</button>
                     <button type="submit" className="s-btn" disabled={loading} style={{ flex: 2 }}>
                       {loading ? <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}><span style={{ width: 18, height: 18, border: '2.5px solid rgba(255,255,255,.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin .7s linear infinite', display: 'inline-block' }} />Creating…</span> : '🚀 Create Account'}
                     </button>
@@ -224,7 +224,7 @@ export default function SignupPage() {
             </form>
           )}
 
-          <p style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: '#4A5168' }}>
+          <p style={{ textAlign: 'center', marginTop: 24, fontSize: 14, color: '#5A6178' }}>
             Already have an account?{' '}
             <Link href="/login" style={{ color: '#764ba2', fontWeight: 700, textDecoration: 'none' }}>Sign in →</Link>
           </p>

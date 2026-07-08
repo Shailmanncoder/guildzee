@@ -15,12 +15,7 @@ import { Request, Response } from 'express';
 
 // --- APK Download Route ---
 router.get('/download-apk', (req: Request, res: Response) => {
-  const apkPath = path.resolve(process.cwd(), '../frontend/android/app/build/outputs/apk/debug/app-debug.apk');
-  res.download(apkPath, 'Guildzee.apk', (err?: Error) => {
-    if (err) {
-      res.status(404).json({ error: 'APK is currently compiling, please try again in a few seconds!' });
-    }
-  });
+  return res.redirect('/Guildzee.apk');
 });
 
 // --- Auth Routes ---
