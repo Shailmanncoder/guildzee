@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { getBackendUrl } from '../lib/backend';
+
 
 interface SocketContextType {
   socket: Socket | null;
@@ -29,15 +31,6 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return;
     }
 
-    const getBackendUrl = () => {
-      if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
-      if (typeof window !== 'undefined') {
-        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-          return `${window.location.protocol}//${window.location.host}/api/backend`;
-        }
-      }
-      return 'http://localhost:4000';
-    };
     const backendUrl = getBackendUrl();
     const socketInstance = io(backendUrl, {
       auth: { token },

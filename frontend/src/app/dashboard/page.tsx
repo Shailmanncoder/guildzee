@@ -5,16 +5,8 @@ import { useSocket } from '../../context/SocketContext';
 import { useCall } from '../../context/CallContext';
 import { useRouter } from 'next/navigation';
 
-const getBackendUrl = () => {
-  if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (typeof window !== 'undefined') {
-    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-      return `${window.location.protocol}//${window.location.host}/api/backend`;
-    }
-  }
-  return 'http://localhost:4000';
-};
-const BE = getBackendUrl();
+import { getBackendUrl } from '../../lib/backend';
+
 
 function AdSenseUnit() {
   useEffect(() => {
@@ -68,9 +60,10 @@ const GIFS = [
 ];
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-function Avatar({ u, size = 36 }: { u: any; size?: number }) {
+function Avatar({ u, size = 36, backendUrl = '' }: { u: any; size?: number; backendUrl?: string }) {
   if (u?.avatarUrl) {
-    const src = u.avatarUrl.startsWith('http') ? u.avatarUrl : `${BE}${u.avatarUrl}`;
+    const resolvedUrl = backendUrl || getBackendUrl();
+    const src = u.avatarUrl.startsWith('http') ? u.avatarUrl : `${resolvedUrl}${u.avatarUrl}`;
     return <img src={src} alt="" style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />;
   }
   const letter = ((u?.displayName || u?.username || '?')[0] || '?').toUpperCase();
@@ -118,6 +111,8 @@ export default function Dashboard() {
   const { token, user, logout, updateUser, loading } = useAuth();
   const { socket, onlineFriends, typingUsers, messagesNotifier } = useSocket();
   const { call, initiateCall, acceptCall, endCall, isMuted, toggleMute, activeVoiceChannelId, voiceUsers, joinVoiceChannel } = useCall();
+  const BE = getBackendUrl();
+
 
   // Server / channel data
   const [servers, setServers] = useState<any[]>([]);

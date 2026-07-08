@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
+import { getBackendUrl } from '../lib/backend';
+
 
 export default function GuildzeeLandingPage() {
   const { token, loading } = useAuth();
@@ -12,7 +14,7 @@ export default function GuildzeeLandingPage() {
   const [activeSpeakerIdx, setActiveSpeakerIdx] = useState(0);
   const [captionName, setCaptionName] = useState('Nova');
   const [captionText, setCaptionText] = useState('');
-  const [downloadUrl, setDownloadUrl] = useState('http://localhost:4000/api/download-apk');
+  const [downloadUrl, setDownloadUrl] = useState('');
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -20,17 +22,9 @@ export default function GuildzeeLandingPage() {
 
   useEffect(() => {
     setMounted(true);
-    const getBackendUrl = () => {
-      if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
-      if (typeof window !== 'undefined') {
-        if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-          return `${window.location.protocol}//${window.location.host}/api/backend`;
-        }
-      }
-      return 'http://localhost:4000';
-    };
     setDownloadUrl(`${getBackendUrl()}/api/download-apk`);
   }, []);
+
 
   useEffect(() => {
     if (!mounted) return;

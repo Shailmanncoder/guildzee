@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { getBackendUrl } from '../lib/backend';
+
 
 export interface User {
   id: string;
@@ -20,15 +22,7 @@ export interface User {
   accentColor: string;
 }
 
-const getBackendUrl = () => {
-  if (process.env.NEXT_PUBLIC_BACKEND_URL) return process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (typeof window !== 'undefined') {
-    if (!window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1')) {
-      return `${window.location.protocol}//${window.location.host}/api/backend`;
-    }
-  }
-  return 'http://localhost:4000';
-};
+
 
 interface AuthContextType {
   token: string | null;
