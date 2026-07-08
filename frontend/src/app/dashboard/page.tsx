@@ -1039,17 +1039,17 @@ export default function Dashboard() {
               </button>
               {onlineFriendsList.length > 0 && (
                 <div style={{ marginBottom: 20 }}>
-                  <p style={{ fontSize: 11, fontWeight: 800, color: '#3D4259', textTransform: 'uppercase', letterSpacing: '.07em', padding: '0 8px', marginBottom: 8 }}>Online — {onlineFriendsList.length}</p>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.07em', padding: '0 8px', marginBottom: 8 }}>Online — {onlineFriendsList.length}</p>
                   {onlineFriendsList.map(f => (
                     <button key={f.id} className="chan-btn" onClick={() => openChat(f.id, 'dm', f.displayName)}
                       style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 10, marginBottom: 2, background: 'transparent', border: 'none', cursor: 'pointer' }}>
                       <div style={{ position: 'relative', flexShrink: 0 }}>
                         <Avatar u={f} size={34} />
-                        <StatusDot status="ONLINE" border="#0E0F17" size={10} />
+                        <StatusDot status="ONLINE" border="var(--bg1)" size={10} />
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 }}>
-                        <span style={{ fontSize: 14, fontWeight: 700, color: '#C8CBDB', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.displayName}</span>
-                        <span style={{ fontSize: 11, color: '#3D4259', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.customStatus || 'Online'}</span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.displayName}</span>
+                        <span style={{ fontSize: 11, color: 'var(--text3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.customStatus || 'Online'}</span>
                       </div>
                     </button>
                   ))}
@@ -1057,21 +1057,21 @@ export default function Dashboard() {
               )}
               {offlineFriendsList.length > 0 && (
                 <div>
-                  <p style={{ fontSize: 11, fontWeight: 800, color: '#3D4259', textTransform: 'uppercase', letterSpacing: '.07em', padding: '0 8px', marginBottom: 8 }}>Offline — {offlineFriendsList.length}</p>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.07em', padding: '0 8px', marginBottom: 8 }}>Offline — {offlineFriendsList.length}</p>
                   {offlineFriendsList.map(f => (
                     <button key={f.id} className="chan-btn" onClick={() => openChat(f.id, 'dm', f.displayName)}
                       style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 10, marginBottom: 2, background: 'transparent', border: 'none', cursor: 'pointer', opacity: .45 }}>
                       <div style={{ position: 'relative', flexShrink: 0 }}>
                         <Avatar u={f} size={34} />
-                        <StatusDot status="offline" border="#0E0F17" size={10} />
+                        <StatusDot status="offline" border="var(--bg1)" size={10} />
                       </div>
-                      <span style={{ fontSize: 14, fontWeight: 600, color: '#6B7289', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.displayName}</span>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: 148 }}>{f.displayName}</span>
                     </button>
                   ))}
                 </div>
               )}
               {onlineFriendsList.length === 0 && offlineFriendsList.length === 0 && (
-                <div style={{ textAlign: 'center', paddingTop: 32, color: '#3D4259', fontSize: 13 }}>No members yet</div>
+                <div style={{ textAlign: 'center', paddingTop: 32, color: 'var(--text3)', fontSize: 13 }}>No members yet</div>
               )}
             </aside>
           )}
