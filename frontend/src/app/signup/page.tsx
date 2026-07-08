@@ -87,12 +87,15 @@ export default function SignupPage() {
       const d = await r.json();
       if (r.ok) {
         setSuccess(true);
-        try {
-          const lr = await fetch(`${BE}/api/auth/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ emailOrUsername: email, password }) });
-          const ld = await lr.json();
-          if (lr.ok) { setRedirecting(true); setTimeout(() => login(ld.token, ld.user), 1000); return; }
-        } catch { }
-        setTimeout(() => router.push('/login'), 2000);
+        setRedirecting(true);
+        // Login immediately with the token returned by the register endpoint
+        const tokenVal = d.token || d.accessToken;
+        if (tokenVal && d.user) {
+          login(tokenVal, d.user);
+        } else {
+          // If for some reason token is not returned, redirect to login page
+          setTimeout(() => router.push('/login'), 1500);
+        }
       } else setError(d.error || 'Registration failed');
     } catch { setError('Connection error. Please try again.'); }
     finally { setLoading(false); }

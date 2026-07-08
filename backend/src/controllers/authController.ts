@@ -46,15 +46,65 @@ export const register = async (req: Request, res: Response) => {
         username: validatedData.username.toLowerCase(),
         displayName: validatedData.displayName,
         passwordHash,
-        status: UserStatus.OFFLINE,
+        status: UserStatus.ONLINE, // Start as online
         themePreference: 'dark',
         accentColor: 'purple',
         avatarConfig: {}, // Empty JSON initial creator config
       },
     });
 
-    logger.info(`User registered successfully: ${user.username}`);
-    return res.status(201).json({ message: 'User registered successfully. You can now log in.' });
+    const userPayload = {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      displayName: user.displayName,
+      status: UserStatus.ONLINE,
+    };
+
+    const accessToken = jwt.sign(userPayload, JWT_SECRET, { expiresIn: '30d' }); // 30 days token validity
+    const refreshToken = jwt.sign(userPayload, JWT_REFRESH_SECRET, { expiresIn: '30d' });
+
+    // Store in Session table
+    await prisma.session.create({
+      data: {
+        userId: user.id,
+        token: refreshToken,
+        deviceName: req.headers['user-agent'] || 'Unknown',
+        ipAddress: req.ip || 'Unknown',
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      },
+    });
+
+    // Send HTTP-Only Cookie
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    });
+
+    logger.info(`User registered and auto-logged in: ${user.username}`);
+    return res.status(201).json({
+      message: 'User registered successfully',
+      accessToken,
+      token: accessToken, // fallback
+      user: {
+        id: user.id,
+        username: user.username,
+        displayName: user.displayName,
+        avatarUrl: user.avatarUrl,
+        avatarConfig: user.avatarConfig,
+        bannerUrl: user.bannerUrl,
+        bio: user.bio,
+        status: UserStatus.ONLINE,
+        customStatus: user.customStatus,
+        xp: user.xp,
+        level: user.level,
+        streak: user.streak,
+        themePreference: user.themePreference,
+        accentColor: user.accentColor,
+      },
+    });
   } catch (error: any) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({ error: error.errors[0].message });
@@ -101,8 +151,8 @@ export const login = async (req: Request, res: Response) => {
       status: UserStatus.ONLINE,
     };
 
-    const accessToken = jwt.sign(userPayload, JWT_SECRET, { expiresIn: '15m' });
-    const refreshToken = jwt.sign(userPayload, JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    const accessToken = jwt.sign(userPayload, JWT_SECRET, { expiresIn: '30d' }); // 30 days token validity
+    const refreshToken = jwt.sign(userPayload, JWT_REFRESH_SECRET, { expiresIn: '30d' });
 
     // Store in Session table
     await prisma.session.create({
@@ -111,7 +161,7 @@ export const login = async (req: Request, res: Response) => {
         token: refreshToken,
         deviceName: req.headers['user-agent'] || 'Unknown',
         ipAddress: req.ip || 'Unknown',
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
       },
     });
 
@@ -120,12 +170,13 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
 
     logger.info(`User logged in: ${user.username}`);
     return res.status(200).json({
       accessToken,
+      token: accessToken, // fallback
       user: {
         id: user.id,
         username: user.username,

@@ -109,7 +109,8 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Invalid email or password');
       setRedirecting(true);
-      login(data.token, data.user);
+      login(data.token || data.accessToken, data.user);
+
     } catch (err: any) {
       setError(err.message || 'Connection error. Please try again.');
       setLoadingSubmit(false);
