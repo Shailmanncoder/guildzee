@@ -5,6 +5,154 @@ import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { getBackendUrl } from '../lib/backend';
 
+function CallTileVideo({ name, color, active, index }: { name: string; color: string; active: boolean; index: number }) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let rafId: number;
+    let width = canvas.width = 300;
+    let height = canvas.height = 200;
+    let time = 0;
+
+    const draw = () => {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, width, height);
+
+      // Gradient background
+      const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+      bgGrad.addColorStop(0, '#0d1020');
+      bgGrad.addColorStop(1, '#070910');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      time += 0.035;
+
+      if (index === 0) {
+        // Nova: Planetary wireframe orb
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        
+        // Glow effect
+        const rad = 45 + Math.sin(time * 2) * 3;
+        const glow = ctx.createRadialGradient(0, 0, 5, 0, 0, rad + 15);
+        glow.addColorStop(0, color);
+        glow.addColorStop(0.3, 'rgba(124, 92, 255, 0.45)');
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(0, 0, rad + 15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, rad, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Horizontal line
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rad, rad * 0.35, Math.sin(time) * 0.2, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Vertical line
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rad * 0.35, rad, Math.cos(time) * 0.2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.restore();
+      } else if (index === 1) {
+        // Kade: Audio equalizer wave bars
+        const bars = 20;
+        const gap = 3;
+        const w = (width - (bars - 1) * gap) / bars;
+        ctx.fillStyle = color;
+        for (let i = 0; i < bars; i++) {
+          const amp = active ? 55 : 12;
+          const h = 25 + Math.sin(i * 0.6 + time * 3.5) * amp + Math.cos(i * 0.3 + time * 1.5) * (amp * 0.3);
+          const y = height - h - 20;
+          ctx.beginPath();
+          ctx.roundRect(i * (w + gap), y, w, h, 3);
+          ctx.fill();
+        }
+      } else if (index === 2) {
+        // Piper: Orbital cyber dots and lines
+        const count = 10;
+        const pts: { x: number; y: number }[] = [];
+        ctx.fillStyle = color;
+        for (let i = 0; i < count; i++) {
+          const px = (width / 2) + Math.cos(time * 0.8 + i * (Math.PI * 2 / count)) * 55;
+          const py = (height / 2) + Math.sin(time * 1.1 + i * (Math.PI * 2 / count)) * 40;
+          pts.push({ x: px, y: py });
+          ctx.beginPath();
+          ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = 'rgba(255, 176, 32, 0.25)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        for (let i = 0; i < count; i++) {
+          for (let j = i + 1; j < count; j++) {
+            const dist = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+            if (dist < 85) {
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+            }
+          }
+        }
+        ctx.stroke();
+      } else {
+        // Rex: Wave layers (ambient flow)
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        for (let j = 0; j < 3; j++) {
+          ctx.beginPath();
+          ctx.globalAlpha = 0.15 + j * 0.25;
+          for (let x = 0; x < width; x += 3) {
+            const y = (height / 2) + Math.sin(x * 0.012 + time * 1.5 + j) * 18 + Math.cos(x * 0.007 - time * 0.9) * 12;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1.0;
+      }
+
+      // Border glow
+      if (active) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(0, 0, width, height);
+      }
+
+      rafId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        width = canvas.width = Math.floor(entry.contentRect.width);
+        height = canvas.height = Math.floor(entry.contentRect.height);
+      }
+    });
+    if (canvas.parentElement) {
+      resizeObserver.observe(canvas.parentElement);
+    }
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      resizeObserver.disconnect();
+    };
+  }, [color, active, index]);
+
+  return <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />;
+}
 
 export default function GuildzeeLandingPage() {
   const { token, loading } = useAuth();
@@ -724,15 +872,9 @@ export default function GuildzeeLandingPage() {
                 { name: 'Piper', color: '#FFB020', idx: 2 },
                 { name: 'Rex', color: '#FF5C6C', idx: 3, shimmer: true },
               ].map(t => (
-                <div key={t.name} className={`call-tile ${activeSpeakerIdx === t.idx ? 'speaking' : ''}`}>
-                  <svg viewBox="0 0 200 140" className="tile-bg" preserveAspectRatio="none">
-                    <rect width="200" height="140" fill={t.idx === 0 ? '#171B29' : t.idx === 1 ? '#161A27' : t.idx === 2 ? '#181C2A' : '#151926'} />
-                  </svg>
-                  <div className="speak-ring" />
-                  <svg className="tile-avatar" viewBox="0 0 24 24" fill="none" stroke={t.color} strokeWidth="1.6">
-                    <circle cx="12" cy="9" r="4" /><path d="M4 20c1.6-4.2 5.2-6.5 8-6.5s6.4 2.3 8 6.5" />
-                  </svg>
-                  <div className="tile-tag">
+                <div key={t.name} className={`call-tile ${activeSpeakerIdx === t.idx ? 'speaking' : ''}`} style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
+                  <CallTileVideo name={t.name} color={t.color} active={activeSpeakerIdx === t.idx} index={t.idx} />
+                  <div className="tile-tag" style={{ zIndex: 10 }}>
                     {activeSpeakerIdx === t.idx && <span className="tile-dot" />}
                     {t.name}
                   </div>
