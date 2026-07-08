@@ -45,16 +45,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Load token and user profile on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
 
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      applyTheme(parsedUser.themePreference || 'dark');
-    }
-    setLoading(false);
+      if (storedToken) {
+        setToken(storedToken);
+        if (storedUser) {
+          try {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            applyTheme(parsedUser.themePreference || 'dark');
+          } catch (e) {
+            console.error('Failed to parse stored user', e);
+          }
+        }
+
+        // Fetch fresh profile from backend to verify token and update status
+        try {
+          const BE = getBackendUrl();
+          const res = await fetch(`${BE}/api/users/me`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const freshUser = data.user || data;
+            setUser(freshUser);
+            localStorage.setItem('user', JSON.stringify(freshUser));
+            applyTheme(freshUser.themePreference || 'dark');
+          } else {
+            // Token is invalid/expired
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setToken(null);
+            setUser(null);
+          }
+        } catch (err) {
+          console.error('Failed to fetch fresh user profile', err);
+          // If network is offline, keep the local user cache as fallback
+        }
+      }
+      setLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const applyTheme = (theme: 'dark' | 'light' | 'amoled') => {
