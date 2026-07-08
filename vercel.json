@@ -6,12 +6,13 @@
     },
     "backend": {
       "root": "backend",
-      "entrypoint": "src/index.ts"
+      "entrypoint": "dist/index.js",
+      "buildCommand": "npm run build"
     }
   },
   "rewrites": [
     {
-      "source": "/api/backend(/.*)?",
+      "source": "/api/backend(/.*)?" ,
       "destination": {
         "type": "service",
         "service": "backend"

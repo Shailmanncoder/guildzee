@@ -49,8 +49,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Static served folder for file attachments and custom user avatar uploads
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Static served folder for file attachments and custom user avatar uploads (local dev only)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+}
+
 
 // Routes mapping
 app.use('/api', apiRouter);
