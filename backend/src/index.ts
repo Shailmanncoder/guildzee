@@ -15,6 +15,10 @@ import { logger } from './utils/logger';
 
 const app = express();
 
+// Trust proxy (required for express-rate-limit on Vercel)
+app.set('trust proxy', 1);
+
+
 // Strip /api/backend prefix when routed via Vercel multi-service rewrites
 app.use((req, res, next) => {
   if (req.url.startsWith('/api/backend')) {

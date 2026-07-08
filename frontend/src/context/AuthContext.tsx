@@ -49,19 +49,45 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const storedToken = localStorage.getItem('token');
       const storedUser = localStorage.getItem('user');
 
+      if (storedToken && storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setToken(storedToken);
+          setUser(parsedUser);
+          applyTheme(parsedUser.themePreference || 'dark');
+          
+          // Optimistically load immediately from local storage cache
+          setLoading(false);
+
+          // Verify session in the background
+          const BE = getBackendUrl();
+          const res = await fetch(`${BE}/api/users/me`, {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const freshUser = data.user || data;
+            setUser(freshUser);
+            localStorage.setItem('user', JSON.stringify(freshUser));
+            applyTheme(freshUser.themePreference || 'dark');
+          } else if (res.status === 401 || res.status === 403) {
+            // Token is expired/invalid - log user out
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setToken(null);
+            setUser(null);
+          }
+          return;
+        } catch (e) {
+          console.error('Failed to parse cached session', e);
+        }
+      }
+
+      // Fallback if no user cached or parsing failed (load synchronously)
       if (storedToken) {
         setToken(storedToken);
-        if (storedUser) {
-          try {
-            const parsedUser = JSON.parse(storedUser);
-            setUser(parsedUser);
-            applyTheme(parsedUser.themePreference || 'dark');
-          } catch (e) {
-            console.error('Failed to parse stored user', e);
-          }
-        }
-
-        // Fetch fresh profile from backend to verify token and update status
         try {
           const BE = getBackendUrl();
           const res = await fetch(`${BE}/api/users/me`, {
@@ -76,7 +102,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             localStorage.setItem('user', JSON.stringify(freshUser));
             applyTheme(freshUser.themePreference || 'dark');
           } else {
-            // Token is invalid/expired
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             setToken(null);
@@ -84,7 +109,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         } catch (err) {
           console.error('Failed to fetch fresh user profile', err);
-          // If network is offline, keep the local user cache as fallback
         }
       }
       setLoading(false);
